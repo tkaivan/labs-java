@@ -1,0 +1,26 @@
+plugins {
+  // Apply the java plugin to add support for building a CLI application in Java.
+  id 'java'
+}
+
+group 'org.labs'
+version '1.0-SNAPSHOT'
+
+repositories {
+  // Use Maven Central for resolving dependecies.
+  mavenCentral()
+}
+
+dependencies {
+  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.9.0'
+  implementation 'com.fasterxml.jackson.core:jackson-core:2.14.0-rc1'
+  implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.0-rc1'
+  testImplementation 'org.glassfish:jakarta.el:4.0.1'
+  implementation 'org.hibernate.validator:hibernate-validator-cdi:7.0.5.Final'
+  implementation 'org.postgresql:postgresql:42.1.4'
+}
+
+test {
+  // Use JUNit Platform for unit tests.
+  useJUnitPlatform()
+}
