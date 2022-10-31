@@ -6,8 +6,12 @@ import java.sql.SQLException;
 public class Main {
   public static void main(String[] args) {
     try {
-      String url = "jdbc:postgresql://db:5432/test_db?user=seshotake";
+      String url = "jdbc:postgresql://postgresdb:5432/postgres?user=postgres&password=postgres";
       PostgreSqlManager psql = new PostgreSqlManager(url);
+
+      var statement = psql.statement();
+      statement
+          .execute("CREATE TABLE IF NOT EXISTS persons(id INTEGER, first_name VARCHAR(50), last_name VARCHAR(50));");
 
       Person person = Person.builder()
           .setId(1)
@@ -19,12 +23,28 @@ public class Main {
 
       psql.sync(queries);
 
+      System.out.println("Inserts persons");
+
       psql.insert(person);
+      psql.insert(Person.builder()
+          .setId(2)
+          .setFirstName("Andrii")
+          .setLastName("Liashenko")
+          .build());
 
       ResultSet rs = psql.select();
       printResultSet(rs);
 
-      psql.delete(1);
+      System.out.println("Delete person with id = 1");
+
+      psql.delete("id = 2");
+
+      printResultSet(psql.select());
+
+      System.out.println("Update person name with id = 1");
+
+      psql.update("first_name", "FirstName", "id = 1");
+      psql.update("last_name", "LastName", "id = 1");
 
       printResultSet(psql.select());
 

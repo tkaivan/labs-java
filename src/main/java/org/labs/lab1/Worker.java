@@ -3,6 +3,7 @@ package org.labs.lab1;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import org.labs.lab4.BadValidationException;
 import org.labs.lab4.Validator;
 
 import jakarta.validation.constraints.Max;
@@ -111,12 +112,12 @@ public class Worker extends Person implements Comparable<Worker> {
         }
 
         @Override
-        public Builder setFirstName(String firstName) throws IllegalArgumentException {
+        public Builder setFirstName(String firstName) {
             return (Builder) super.setFirstName(firstName);
         }
 
         @Override
-        public Builder setLastName(String lastName) throws IllegalArgumentException {
+        public Builder setLastName(String lastName) {
             return (Builder) super.setLastName(lastName);
         }
 
@@ -130,7 +131,7 @@ public class Worker extends Person implements Comparable<Worker> {
             return (Builder) super.setIsFemale(isFemale);
         }
 
-        public Worker build() {
+        public Worker build() throws BadValidationException {
             return Validator.validateAndReturn(Worker.this);
         }
     }

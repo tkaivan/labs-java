@@ -7,6 +7,7 @@ import java.util.Objects;
 
 import org.labs.lab2.TxtSerializable;
 import org.labs.lab3.ComparatorFactory;
+import org.labs.lab4.BadValidationException;
 import org.labs.lab4.Validator;
 
 import jakarta.validation.constraints.NotNull;
@@ -103,7 +104,7 @@ public class City implements TxtSerializable<City> {
     }
 
     @Override
-    public City deserializeFromString(String data) {
+    public City deserializeFromString(String data) throws Exception {
         var parts = Serialize.getPartsOfCity(data);
         var people = Serialize.getPeopleFromString(data);
         return City.builder()
@@ -120,7 +121,7 @@ public class City implements TxtSerializable<City> {
             return data.substring(0, data.indexOf(pattern)).split(",");
         }
 
-        static List<Person> getPeopleFromString(String data) {
+        static List<Person> getPeopleFromString(String data) throws BadValidationException {
             List<Person> people = new ArrayList<>();
             String personsString = data.substring(data.indexOf(pattern) + pattern.length(), data.indexOf("]"));
             String[] personsStrings = personsString.split("Person=");
@@ -164,7 +165,7 @@ public class City implements TxtSerializable<City> {
             return this;
         }
 
-        public City build() {
+        public City build() throws BadValidationException {
             return Validator.validateAndReturn(City.this);
         }
 

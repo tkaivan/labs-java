@@ -17,7 +17,7 @@ public interface TxtSerializable<T> {
      * @param data txt data for deserialize
      * @return deserialized object
      */
-    T deserializeFromString(String data);
+    T deserializeFromString(String data) throws Exception;
 
     /**
      * @param string string to parse

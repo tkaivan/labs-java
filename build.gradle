@@ -1,10 +1,15 @@
 plugins {
   // Apply the java plugin to add support for building a CLI application in Java.
   id 'java'
+  id 'application'
 }
 
 group 'org.labs'
 version '1.0-SNAPSHOT'
+
+application {
+  mainClass = 'org.labs.lab5.Main'
+}
 
 repositories {
   // Use Maven Central for resolving dependecies.
@@ -17,7 +22,7 @@ dependencies {
   implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.14.0-rc1'
   testImplementation 'org.glassfish:jakarta.el:4.0.1'
   implementation 'org.hibernate.validator:hibernate-validator-cdi:7.0.5.Final'
-  implementation 'org.postgresql:postgresql:42.1.4'
+  implementation 'org.postgresql:postgresql:42.2.24'
 }
 
 test {

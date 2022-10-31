@@ -6,10 +6,10 @@ public class Validator {
   private static final jakarta.validation.Validator validator = Validation.buildDefaultValidatorFactory()
       .getValidator();
 
-  public static <T> T validateAndReturn(T object) {
+  public static <T> T validateAndReturn(T object) throws BadValidationException {
     var constraints = validator.validate(object);
     if (constraints.size() > 0) {
-      throw new IllegalArgumentException("Bad validation object");
+      throw new BadValidationException("Bad validation object");
     }
     return object;
   }

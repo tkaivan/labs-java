@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 
 import org.labs.lab2.TxtSerializable;
+import org.labs.lab4.BadValidationException;
 import org.labs.lab4.Validator;
 
 /**
@@ -145,7 +146,7 @@ public class Person implements TxtSerializable<Person> {
     }
 
     @Override
-    public Person deserializeFromString(String data) {
+    public Person deserializeFromString(String data) throws BadValidationException {
         String[] parts = data.substring(0, data.indexOf("}")).split(",");
         if (parts.length > 5) {
             return Person.builder().setId(Integer.parseInt(parse(parts[0])))
@@ -193,7 +194,7 @@ public class Person implements TxtSerializable<Person> {
          * @param firstName person first name
          * @return Builder
          */
-        public Builder setFirstName(String firstName) throws IllegalArgumentException {
+        public Builder setFirstName(String firstName)  {
             Person.this.firstName = firstName;
             return this;
         }
@@ -204,7 +205,7 @@ public class Person implements TxtSerializable<Person> {
          * @param lastName person last name
          * @return Builder
          */
-        public Builder setLastName(String lastName) throws IllegalArgumentException {
+        public Builder setLastName(String lastName) {
             Person.this.lastName = lastName;
             return this;
         }
@@ -236,7 +237,7 @@ public class Person implements TxtSerializable<Person> {
          *
          * @return Person object
          */
-        public Person build() {
+        public Person build() throws BadValidationException {
             return Validator.validateAndReturn(Person.this);
         }
     }

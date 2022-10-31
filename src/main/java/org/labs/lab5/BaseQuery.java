@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class BaseQuery<T> implements QueryCondition {
+public abstract class BaseQuery<T> {
   private static final String UPDATE_QUERY = "UPDATE %s SET %s = %s WHERE %s;";
   private static final String SELECT_QUERY = "SELECT * FROM %s;";
   private static final String DELETE_QUERY = "DELETE FROM %s WHERE %s";
@@ -22,12 +22,15 @@ public abstract class BaseQuery<T> implements QueryCondition {
     return String.format(SELECT_QUERY, table.value());
   }
 
-  public String delete(Object value) throws Exception {
-    return String.format(DELETE_QUERY, table.value(), check(value));
+  public String delete(String condition) throws Exception {
+    return String.format(DELETE_QUERY, table.value(), condition);
   }
 
-  public String update(Object value) throws Exception {
-    return String.format(UPDATE_QUERY, table.value(), value.toString(), check(value));
+  public String update(String column_name, Object value, String condition) throws Exception {
+    if (value instanceof String s) {
+      value = "\'" + s + "\'";
+    }
+    return String.format(UPDATE_QUERY, table.value(), column_name, value.toString(), condition);
   }
 
   public <T> String insert(T object) throws Exception {

@@ -34,18 +34,18 @@ public class PostgreSqlManager {
     throw new Exception("Cannot execute");
   }
 
-  public void update(Object value) throws Exception {
+  public void update(String column_name, Object value, String condition) throws Exception {
     if (canExecute()) {
-      statement.addBatch(queries.update(value));
+      statement.addBatch(queries.update(column_name, value, condition));
       statement.executeBatch();
       return;
     }
     throw new Exception("Cannot execute");
   }
 
-  public void delete(Object value) throws Exception {
+  public void delete(String condition) throws Exception {
     if (canExecute()) {
-      statement.addBatch(queries.delete(value));
+      statement.addBatch(queries.delete(condition));
       statement.executeBatch();
       return;
     }
@@ -57,6 +57,10 @@ public class PostgreSqlManager {
       return statement.executeQuery(queries.select());
     }
     throw new Exception("Cannot execute");
+  }
+
+  public Statement statement() {
+    return statement;
   }
 
   private boolean canExecute() {
