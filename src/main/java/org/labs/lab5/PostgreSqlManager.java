@@ -25,29 +25,23 @@ public class PostgreSqlManager {
     this.connection.close();
   }
 
-  public <T> void insert(T object) throws Exception {
+  public <T> int insert(T object) throws Exception {
     if (canExecute()) {
-      statement.addBatch(queries.insert(object));
-      statement.executeBatch();
-      return;
+      return statement.executeUpdate(queries.insert(object));
     }
     throw new Exception("Cannot execute");
   }
 
-  public void update(String column_name, Object value, String condition) throws Exception {
+  public int update(String column_name, Object value, String condition) throws Exception {
     if (canExecute()) {
-      statement.addBatch(queries.update(column_name, value, condition));
-      statement.executeBatch();
-      return;
+      return statement.executeUpdate(queries.update(column_name, value, condition));
     }
     throw new Exception("Cannot execute");
   }
 
-  public void delete(String condition) throws Exception {
+  public int  delete(String condition) throws Exception {
     if (canExecute()) {
-      statement.addBatch(queries.delete(condition));
-      statement.executeBatch();
-      return;
+      return statement.executeUpdate(queries.delete(condition));
     }
     throw new Exception("Cannot execute");
   }

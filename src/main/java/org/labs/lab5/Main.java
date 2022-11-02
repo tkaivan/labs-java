@@ -3,6 +3,7 @@ package org.labs.lab5;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+// TODO: make main more clean
 public class Main {
   public static void main(String[] args) {
     try {
@@ -11,7 +12,7 @@ public class Main {
 
       var statement = psql.statement();
       statement
-          .execute("CREATE TABLE IF NOT EXISTS persons(id INTEGER, first_name VARCHAR(50), last_name VARCHAR(50));");
+          .execute("DROP TABLE persons; CREATE TABLE IF NOT EXISTS persons(id INTEGER, first_name VARCHAR(50), last_name VARCHAR(50));");
 
       Person person = Person.builder()
           .setId(1)
@@ -27,7 +28,7 @@ public class Main {
 
       psql.insert(person);
       psql.insert(Person.builder()
-          .setId(2)
+          .setId(1)
           .setFirstName("Andrii")
           .setLastName("Liashenko")
           .build());
@@ -37,7 +38,8 @@ public class Main {
 
       System.out.println("Delete person with id = 1");
 
-      psql.delete("id = 2");
+      var result = psql.delete("id = 2");
+      System.out.println(result);
 
       printResultSet(psql.select());
 
