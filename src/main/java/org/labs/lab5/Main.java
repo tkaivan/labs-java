@@ -3,54 +3,37 @@ package org.labs.lab5;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-// TODO: make main more clean
 public class Main {
   public static void main(String[] args) {
     try {
-      String url = "jdbc:postgresql://postgresdb:5432/postgres?user=postgres&password=postgres";
-      PostgreSqlManager psql = new PostgreSqlManager(url);
+      PersonService personService = new PersonService();
+      personService.init();
 
-      var statement = psql.statement();
-      statement
-          .execute("DROP TABLE persons; CREATE TABLE IF NOT EXISTS persons(id INTEGER, first_name VARCHAR(50), last_name VARCHAR(50));");
-
-      Person person = Person.builder()
-          .setId(1)
-          .setFirstName("Ivan")
-          .setLastName("Tkachuk")
-          .build();
-
-      PersonQueries queries = new PersonQueries();
-
-      psql.sync(queries);
+      Person person = Person.builder().setId(1).setFirstName("Ivan").setLastName("Tkachuk").build();
 
       System.out.println("Inserts persons");
 
-      psql.insert(person);
-      psql.insert(Person.builder()
-          .setId(1)
-          .setFirstName("Andrii")
-          .setLastName("Liashenko")
-          .build());
+      personService.addToDb(person);
 
-      ResultSet rs = psql.select();
-      printResultSet(rs);
+      personService.addToDb(Person.builder().setId(2).setFirstName("Andrii").setLastName("Liashenko").build());
+
+      printResultSet(personService.selectAll());
 
       System.out.println("Delete person with id = 1");
 
-      var result = psql.delete("id = 2");
-      System.out.println(result);
+      var deletedPerson = personService.delete("id = 1");
+      printResultSet(deletedPerson);
 
-      printResultSet(psql.select());
+      System.out.println("Update person name with id = 2");
 
-      System.out.println("Update person name with id = 1");
+      personService.update("first_name", "FirstName", "id = 2");
+      personService.update("last_name", "LastName", "id = 2");
 
-      psql.update("first_name", "FirstName", "id = 1");
-      psql.update("last_name", "LastName", "id = 1");
+      var updatedPerson = personService.select(2);
+      System.out.println(updatedPerson);
 
-      printResultSet(psql.select());
+      personService.close();
 
-      psql.close();
     } catch (Exception e) {
       System.err.println(e);
     }

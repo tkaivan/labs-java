@@ -18,7 +18,7 @@ public abstract class BaseQuery<T> {
     this.fields = type.getDeclaredFields();
   }
 
-  public String select() {
+  public String selectAll() {
     return String.format(SELECT_QUERY, table.value());
   }
 
@@ -32,8 +32,12 @@ public abstract class BaseQuery<T> {
     }
     return String.format(UPDATE_QUERY, table.value(), column_name, value.toString(), condition);
   }
+  
+  public String selectById(int id) throws Exception {
+    return String.format(SELECT_QUERY + " WHERE id = %d", table.value(), id);
+  }
 
-  public <T> String insert(T object) throws Exception {
+  public String insert(Object object) throws Exception {
     var record = getRecord(object);
     var columns = new StringBuilder();
     var values = new StringBuilder();
@@ -57,7 +61,7 @@ public abstract class BaseQuery<T> {
     throw new Exception();
   }
 
-  private <T> Map<String, String> getRecord(T object) throws Exception {
+  private Map<String, String> getRecord(Object object) throws Exception {
     var record = new HashMap<String, String>();
     for (var field : fields) {
       var annotation = field.getAnnotation(Column.class);

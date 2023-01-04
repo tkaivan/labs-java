@@ -32,23 +32,30 @@ public class PostgreSqlManager {
     throw new Exception("Cannot execute");
   }
 
-  public int update(String column_name, Object value, String condition) throws Exception {
+  public ResultSet update(String column_name, Object value, String condition) throws Exception {
     if (canExecute()) {
-      return statement.executeUpdate(queries.update(column_name, value, condition));
+      return statement.executeQuery(queries.update(column_name, value, condition));
     }
     throw new Exception("Cannot execute");
   }
 
-  public int  delete(String condition) throws Exception {
+  public ResultSet delete(String condition) throws Exception {
     if (canExecute()) {
-      return statement.executeUpdate(queries.delete(condition));
+      return statement.executeQuery(queries.delete(condition));
     }
     throw new Exception("Cannot execute");
   }
 
-  public ResultSet select() throws Exception {
+  public ResultSet selectAll() throws Exception {
     if (canExecute()) {
-      return statement.executeQuery(queries.select());
+      return statement.executeQuery(queries.selectAll());
+    }
+    throw new Exception("Cannot execute");
+  }
+
+  public ResultSet select(int id) throws Exception {
+    if (canExecute()) {
+      return statement.executeQuery(queries.selectById(id));
     }
     throw new Exception("Cannot execute");
   }
