@@ -5,9 +5,9 @@ import java.sql.SQLException;
 
 public class PersonService {
   PostgreSqlManager psql;
+  static final String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres";
 
   public void init() throws Exception {
-    final String url = "jdbc:postgresql://postgresdb:5432/postgres?user=postgres&password=postgres";
     psql = new PostgreSqlManager(url);
 
     var statement = psql.statement();
