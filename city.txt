@@ -1,1 +1,0 @@
-City={ name='Lviv', state='Ukraine', people='[Person={ id='1', birthday='null', firstName='Ivan', lastName='Tkachuk', isEmployed='false', isFemale='false'}, Person={ id='1', birthday='null', firstName='Andrii', lastName='Liashenko', isEmployed='false', isFemale='false'}]'}
