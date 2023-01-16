@@ -7,31 +7,31 @@ public class PersonService {
   PostgreSqlManager psql;
   static final String url = "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres";
 
-  public void init() throws Exception {
-    psql = new PostgreSqlManager(url);
+  public PersonService() throws Exception {
+    this.psql = new PostgreSqlManager(url);
 
     var statement = psql.statement();
     statement.execute(
-        "DROP TABLE persons; CREATE TABLE IF NOT EXISTS persons(id INTEGER, first_name VARCHAR(50), last_name VARCHAR(50));");
+        "DROP TABLE IF EXISTS persons; CREATE TABLE IF NOT EXISTS persons(id INTEGER, first_name VARCHAR(50), last_name VARCHAR(50));");
+   
+    var queries = new PersonQueries();
 
-    var queris = new PersonQueries();
-
-    psql.sync(queris);
+    psql.sync(queries);
   }
 
-  public void addToDb(Person person) throws Exception {
-    psql.insert(person);
+  public int addToDb(Person person) throws Exception {
+    return psql.insert(person);
   }
 
   public ResultSet getAll() throws Exception {
     return psql.selectAll();
   }
 
-  public ResultSet delete(String query) throws Exception {
+  public int delete(String query) throws Exception {
     return psql.delete(query);
   }
 
-  public ResultSet update(String column_name, Object value, String condition) throws Exception {
+  public int update(String column_name, Object value, String condition) throws Exception {
     return psql.update(column_name, value, condition);
   }
 

@@ -7,30 +7,26 @@ public class Main {
   public static void main(String[] args) {
     try {
       PersonService personService = new PersonService();
-      personService.init();
 
       Person person = Person.builder().setId(1).setFirstName("Ivan").setLastName("Tkachuk").build();
 
-      System.out.println("Inserts persons");
-
-      personService.addToDb(person);
+      int insertCount = personService.addToDb(person);
+      System.out.println("Inserted " + insertCount + " persons");
 
       personService.addToDb(Person.builder().setId(2).setFirstName("Andrii").setLastName("Liashenko").build());
 
       printResultSet(personService.selectAll());
 
-      System.out.println("Delete person with id = 1");
-
-      var deletedPerson = personService.delete("id = 1");
-      printResultSet(deletedPerson);
+      int deleteCount = personService.delete("id = 1");
+      System.out.println("Deleted " + deleteCount + " persons");
 
       System.out.println("Update person name with id = 2");
 
-      personService.update("first_name", "FirstName", "id = 2");
-      personService.update("last_name", "LastName", "id = 2");
+      personService.update("first_name", "Ivan", "id = 2");
+      int updateCount = personService.update("last_name", "Tkachuk", "id = 2");
+      System.out.println("Updated " + updateCount + " persons");
 
-      var updatedPerson = personService.select(2);
-      System.out.println(updatedPerson);
+      printResultSet(personService.selectAll());
 
       personService.close();
 
