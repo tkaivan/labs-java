@@ -43,3 +43,6 @@ bin/
 data
 
 db-data/
+
+test*
+city.txt
