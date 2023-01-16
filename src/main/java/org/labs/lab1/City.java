@@ -20,7 +20,7 @@ public class City implements TxtSerializable<City> {
     @NotNull
     @Pattern(regexp = "[A-z][a-z]{0,19}")
     private String state;
-    private final List<Person> people = new ArrayList<>();
+    private List<Person> people = new ArrayList<>();
 
     /**
      * Provider access to name
